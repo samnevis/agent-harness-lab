@@ -24,7 +24,7 @@ It answers the questions you currently *can't* answer about an agent run:
 ## Try it in 60 seconds
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/agent-harness-lab.git
+git clone https://github.com/samnevis/agent-harness-lab.git
 cd agent-harness-lab
 python3 -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
