@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+build/
+dist/
+runs/
+report.md
+report.html
+report.json
+report.xml
+agent-ci.html
+pr_comment.md
+*.svg
+site/
+.pytest_cache/
+.DS_Store

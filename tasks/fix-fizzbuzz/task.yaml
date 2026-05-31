@@ -1,0 +1,27 @@
+id: fix-fizzbuzz
+name: Fix FizzBuzz ordering bug
+description: >
+  fizzbuzz() checks divisibility by 3 and 5 before 15, so multiples of 15 never
+  return "fizzbuzz". The agent must reorder the checks.
+prompt: >
+  fizzbuzz(15) should return "fizzbuzz" but returns "fizz". Fix fizzbuzz.py so all
+  tests pass. Only change fizzbuzz.py.
+
+repo: repo
+
+checks:
+  - name: unittests
+    cmd: python3 -m unittest discover -p "test_*.py"
+
+solution:
+  - "printf 'def fizzbuzz(n):\\n    if n %% 15 == 0:\\n        return \"fizzbuzz\"\\n    if n %% 3 == 0:\\n        return \"fizz\"\\n    if n %% 5 == 0:\\n        return \"buzz\"\\n    return str(n)\\n' > fizzbuzz.py"
+
+file_rules:
+  allow:
+    - "fizzbuzz.py"
+  deny:
+    - "*.env"
+
+tags: [bugfix, python]
+difficulty: easy
+timeout_sec: 120

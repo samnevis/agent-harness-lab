@@ -1,0 +1,74 @@
+name: Agent CI
+
+# Reliability gate for agent-authored PRs. Grades the PR diff with the same
+# harness used locally: runs checks, enforces file rules (no secrets / in scope),
+# compares against a committed baseline, and posts a sticky summary comment.
+#
+# Setup:
+#   1. Commit a baseline (optional): `ahl baseline --out baseline.json`.
+#   2. Adjust the check/allow/deny flags below to your repo.
+#   3. The default GITHUB_TOKEN can comment on PRs (permissions block below).
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  agent-ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR (full history for diffing against base)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Agent Harness Lab
+        run: |
+          python -m pip install --upgrade pip
+          # If AHL lives in this repo, `pip install -e .`; otherwise install from
+          # its source/package. Adjust to taste:
+          pip install -e ./agent-harness-lab || pip install -e .
+
+      - name: Make base ref available
+        run: git fetch --no-tags origin "${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}"
+
+      - name: Grade the PR diff
+        # Recording the run must not fail the job; the gate step decides pass/fail.
+        continue-on-error: true
+        run: |
+          ahl grade-pr \
+            --repo-path . \
+            --base "origin/${{ github.base_ref }}" \
+            --head "${{ github.event.pull_request.head.sha }}" \
+            --author "${{ github.event.pull_request.user.login }}" \
+            --model pr \
+            --check "python -m pytest -q" \
+            --deny "*.env" --deny "**/secrets/**" --deny "**/*.pem" \
+            --runs-dir runs
+
+      - name: Evaluate gate and comment on the PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          ahl ci \
+            --runs-dir runs \
+            ${{ hashFiles('baseline.json') != '' && '--baseline baseline.json' || '' }} \
+            --html agent-ci.html \
+            --pr "${{ github.event.pull_request.number }}" \
+            --gh-repo "${{ github.repository }}"
+
+      - name: Upload HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-ci-report
+          path: agent-ci.html

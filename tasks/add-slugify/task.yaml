@@ -1,0 +1,28 @@
+id: add-slugify
+name: Implement slugify()
+description: >
+  A feature-add task: slugify() is a stub that raises NotImplementedError. The
+  agent must implement it so the provided tests pass.
+prompt: >
+  Implement slugify() in slugify.py so that all tests pass. It should lowercase
+  the text, turn any run of non-alphanumeric characters into a single hyphen, and
+  strip leading/trailing hyphens. Only edit slugify.py.
+
+repo: repo
+
+checks:
+  - name: unittests
+    cmd: python3 -m unittest discover -p "test_*.py"
+
+solution:
+  - "printf 'import re\\n\\n\\ndef slugify(text):\\n    return re.sub(r\"[^a-zA-Z0-9]+\", \"-\", text).strip(\"-\").lower()\\n' > slugify.py"
+
+file_rules:
+  allow:
+    - "slugify.py"
+  deny:
+    - "*.env"
+
+tags: [feature, python]
+difficulty: medium
+timeout_sec: 120

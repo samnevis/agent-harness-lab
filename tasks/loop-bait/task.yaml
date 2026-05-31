@@ -1,0 +1,32 @@
+id: loop-bait
+name: Fix count_up() within a tight budget
+description: >
+  An off-by-one bug with a strict step/cost budget. The fix is trivial, so an
+  efficient agent passes -- but an agent that thrashes (loops) blows the budget
+  and fails even though the tests go green.
+prompt: >
+  count_up(n) should return [1..n] inclusive but drops the last element. Fix
+  counter.py. Be efficient: you have a small step budget.
+
+repo: repo
+
+checks:
+  - name: unittests
+    cmd: python3 -m unittest discover -p "test_*.py"
+
+solution:
+  - "printf 'def count_up(n):\\n    return list(range(1, n + 1))\\n' > counter.py"
+
+file_rules:
+  allow:
+    - "counter.py"
+  deny:
+    - "*.env"
+
+budget:
+  max_steps: 3
+  max_cost_usd: 0.05
+
+tags: [bugfix, budget, python]
+difficulty: medium
+timeout_sec: 120

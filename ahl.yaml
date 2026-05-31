@@ -1,0 +1,29 @@
+# Example Agent Harness Lab config. Run a named suite with:
+#   ahl bench --config ahl.yaml --suite smoke
+tasks_dir: tasks
+runs_dir: runs
+
+suites:
+  # A quick mixed bag that shows the harness catching different failure modes.
+  smoke:
+    agents:
+      - { agent: mock, model: claude }
+      - { agent: mock, model: codex }
+      - { agent: noop, model: gpt-baseline }
+      - { agent: reckless, model: rogue }
+    repeat: 1
+
+  # Robustness: hammer the same cell many times to measure flakiness / pass@k.
+  robustness:
+    agents:
+      - { agent: flaky, model: claude, config: { success_ratio: 0.6, seed: demo } }
+      - { agent: mock, model: codex }
+    repeat: 10
+    tags: [bugfix]
+
+  # Efficiency: includes a looping agent that blows tight task budgets.
+  efficiency:
+    agents:
+      - { agent: mock, model: claude }
+      - { agent: looper, model: thrasher }
+    tasks: [loop-bait]
