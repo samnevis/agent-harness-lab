@@ -1,4 +1,4 @@
-"""Command-line interface for Agent Harness Lab.
+"""Command-line interface for Harness Lab.
 
     ahl tasks                          list available tasks
     ahl run  --task ID --agent NAME    run one task with one agent
@@ -395,7 +395,7 @@ def _short(text: str, n: int) -> str:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    p = argparse.ArgumentParser(prog="ahl", description="Agent Harness Lab")
+    p = argparse.ArgumentParser(prog="ahl", description="Harness Lab")
     p.add_argument("--version", action="version", version=f"ahl {__version__}")
     sub = p.add_subparsers(dest="command", required=True)
 

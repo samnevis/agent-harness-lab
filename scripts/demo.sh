@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# End-to-end demo of Agent Harness Lab. Safe to run repeatedly.
+# End-to-end demo of Harness Lab. Safe to run repeatedly.
 #
 #   ./scripts/demo.sh
 #

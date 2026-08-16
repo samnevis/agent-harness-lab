@@ -1,4 +1,4 @@
-# Agent Harness Lab — Design
+# Harness Lab — Design
 
 ## Goal
 

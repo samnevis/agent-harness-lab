@@ -1,10 +1,9 @@
-# Agent Harness Lab
+# Harness Lab
 
-**A test lab, scoreboard, and black-box recorder for AI coding agents.**
+**A sandbox, grader, and scoreboard for repository coding tasks.**
 
-Run AI coding agents (Cursor, Claude Code, Codex, or any CLI agent) on real coding
-tasks inside isolated sandboxes, record everything they do, grade the result, and
-compare agents / models / prompts on a scoreboard — then gate your PRs on it.
+Isolate a run, record a trace, grade the patch, and rank repeats with pass@k.
+Point it at coding agents or any CLI to compare models and prompts, then gate PRs on the result.
 
 It answers the questions you currently *can't* answer about an agent run:
 

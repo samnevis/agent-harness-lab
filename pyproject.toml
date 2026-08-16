@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "agent-harness-lab"
 version = "0.1.0"
-description = "A test lab + scoreboard + black-box recorder for AI coding agents."
+description = "A sandbox, grader, and scoreboard for repository coding tasks."
 readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }

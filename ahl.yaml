@@ -1,4 +1,4 @@
-# Example Agent Harness Lab config. Run a named suite with:
+# Example Harness Lab config. Run a named suite with:
 #   ahl bench --config ahl.yaml --suite smoke
 tasks_dir: tasks
 runs_dir: runs

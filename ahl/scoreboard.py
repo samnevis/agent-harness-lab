@@ -161,7 +161,7 @@ def flakiness(rows: List[RunRow]) -> List[FlakeStat]:
 
 
 def to_markdown(rows: List[RunRow]) -> str:
-    lines: List[str] = ["# Agent Harness Lab — Scoreboard", ""]
+    lines: List[str] = ["# Harness Lab — Scoreboard", ""]
 
     board = leaderboard(rows)
     lines += ["## Leaderboard", ""]

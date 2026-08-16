@@ -49,7 +49,7 @@ def _e(text) -> str:
 
 def render_html(
     rows: List[RunRow],
-    title: str = "Agent Harness Lab",
+    title: str = "Harness Lab",
     diff: Optional[Diff] = None,
     run_links: Optional[Dict[str, str]] = None,
 ) -> str:
@@ -185,7 +185,7 @@ def render_run_detail(result: Dict, meta: Dict, events: List[Dict], title: str) 
     return "".join(parts)
 
 
-def write_html(rows: List[RunRow], path: Path, title: str = "Agent Harness Lab", diff: Optional[Diff] = None) -> Path:
+def write_html(rows: List[RunRow], path: Path, title: str = "Harness Lab", diff: Optional[Diff] = None) -> Path:
     path = Path(path)
     path.write_text(render_html(rows, title=title, diff=diff))
     return path
@@ -194,7 +194,7 @@ def write_html(rows: List[RunRow], path: Path, title: str = "Agent Harness Lab",
 def write_report(
     rows: List[RunRow],
     out_dir: Path,
-    title: str = "Agent Harness Lab",
+    title: str = "Harness Lab",
     diff: Optional[Diff] = None,
 ) -> Path:
     """Write index.html + a detail page per run into ``out_dir``. Returns index path."""
