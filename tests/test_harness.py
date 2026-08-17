@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import sys
+import types
 from pathlib import Path
 
 import pytest
@@ -129,6 +131,44 @@ def test_noop_agent_fails_task(tmp_path):
     result = run_task(task, agent, tmp_path / "runs")
     assert result.grade.success is False
     assert "no files were changed" in "; ".join(result.grade.reasons)
+
+
+def test_langchain_agent_requires_optional_dependency(tmp_path, monkeypatch):
+    monkeypatch.setitem(sys.modules, "langchain_core", None)
+    monkeypatch.setitem(sys.modules, "langchain_core.runnables", None)
+
+    task = TaskSpec(id="t", name="t", prompt="touch done.txt", timeout_sec=5)
+    agent = build_agent("langchain", model="test", config={"cmd": "true"})
+
+    with pytest.raises(ValueError, match="langchain-core"):
+        agent.run(task, tmp_path, Tracer())
+
+
+def test_langchain_agent_runs_command_through_runnable(tmp_path, monkeypatch):
+    class FakeRunnableLambda:
+        def __init__(self, fn):
+            self.fn = fn
+
+        def invoke(self, inputs):
+            return self.fn(inputs)
+
+    langchain_core = types.ModuleType("langchain_core")
+    runnables = types.ModuleType("langchain_core.runnables")
+    runnables.RunnableLambda = FakeRunnableLambda
+    monkeypatch.setitem(sys.modules, "langchain_core", langchain_core)
+    monkeypatch.setitem(sys.modules, "langchain_core.runnables", runnables)
+
+    task = TaskSpec(id="t", name="t", prompt="write marker", timeout_sec=5)
+    agent = build_agent(
+        "langchain",
+        model="test",
+        config={"cmd": "python3 -c \"from pathlib import Path; Path('done.txt').write_text('ok')\""},
+    )
+
+    result = agent.run(task, tmp_path, Tracer())
+
+    assert result.exit_code == 0
+    assert (tmp_path / "done.txt").read_text() == "ok"
 
 
 def test_scoreboard_ranks_mock_above_noop(tmp_path):

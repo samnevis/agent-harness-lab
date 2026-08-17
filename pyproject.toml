@@ -17,6 +17,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=7.0"]
+langchain = ["langchain-core"]
 
 [project.scripts]
 ahl = "ahl.cli:main"

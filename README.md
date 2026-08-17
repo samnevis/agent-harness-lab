@@ -31,6 +31,10 @@ pip install -e ".[dev]"
 # Run every task against several agents (no API keys needed)
 ahl bench --agents "mock:claude,mock:codex,noop:gpt-baseline,reckless:rogue"
 
+# Optional: run an external coding-agent command through the LangChain adapter
+pip install -e ".[langchain]"
+ahl run --agent langchain --model cli-agent --cmd "your-agent --prompt {prompt_file}"
+
 # See the scoreboard + open a rich HTML report with per-run trace timelines
 ahl report --report-dir site && open site/index.html
 ```
@@ -88,6 +92,8 @@ with **no API keys**. Point the `command` adapter at a real agent when you're re
   **flakiness / pass@k** across repeated attempts.
 - **Agent CI** — grade a real PR's diff in a `git worktree`, gate on regressions,
   security, and pass-rate, and post a sticky PR comment. Drop-in GitHub Action.
+- **LangChain runner** — optional `langchain` adapter runs external coding-agent
+  commands through a LangChain Runnable while preserving sandboxing, tracing, and grading.
 - **Regression baselines** — snapshot results to JSON, detect regressions, fixes,
   and **cost regressions** later.
 - **MCP Doctor** — grade the *tools* an agent used (error rate, redundant calls,

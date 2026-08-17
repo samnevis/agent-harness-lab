@@ -10,6 +10,7 @@ from typing import Dict, Optional
 
 from .base import Agent
 from .command import CommandAgent
+from .langchain import LangChainAgent
 from .mock import MockAgent, NoopAgent, RecklessAgent
 from .synthetic import FlakyAgent, LooperAgent, ScriptedAgent
 
@@ -21,6 +22,7 @@ _BUILTINS = {
     "looper": LooperAgent,
     "scripted": ScriptedAgent,
     "command": CommandAgent,
+    "langchain": LangChainAgent,
 }
 
 
@@ -40,5 +42,6 @@ __all__ = [
     "LooperAgent",
     "ScriptedAgent",
     "CommandAgent",
+    "LangChainAgent",
     "build_agent",
 ]

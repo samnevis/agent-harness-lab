@@ -407,7 +407,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     pr = sub.add_parser("run", help="run a task with an agent")
     pr.add_argument("--task", required=True)
-    pr.add_argument("--agent", default="mock", help="mock | noop | command")
+    pr.add_argument("--agent", default="mock", help="mock | noop | command | langchain")
     pr.add_argument("--model", default="", help="model label for the scoreboard")
     pr.add_argument("--cmd", default="", help="command template for the 'command' agent")
     pr.add_argument("--tasks-dir", default=str(DEFAULT_TASKS_DIR))
